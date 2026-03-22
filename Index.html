@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Princesa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* --- PANTALLA DE INICIO ANIMADA --- */
+        #intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            z-index: 100;
+            transition: opacity 2s ease-in-out;
+        }
+
+        #intro p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ffeb3b;
+            margin-bottom: 40px;
+            text-align: center;
+            animation: neonGlow 2s ease-in-out infinite alternate;
+            padding: 0 20px;
+        }
+
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffeb3b, 0 0 40px #ffeb3b;
+                transform: scale(1);
+            }
+            to {
+                text-shadow: 0 0 5px #fff, 0 0 10px #ffeb3b, 0 0 15px #ffeb3b;
+                transform: scale(1.05);
+            }
+        }
+
+        #btn-entrar {
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            color: #000;
+            background: linear-gradient(45deg, #ffeb3b, #fbc02d);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 235, 59, 0.6);
+            transition: all 0.4s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #btn-entrar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 235, 59, 0.9);
+        }
+
+        /* --- ESCENA PRINCIPAL --- */
+        #cine-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .titulo-fijo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
+            width: 90%;
+        }
+
+        .frase-container {
+            height: 100px;
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .frase {
+            position: absolute;
+            font-size: 1.4rem;
+            text-align: center;
+            font-weight: bold;
+            background: linear-gradient(to right, #fff, #ffd600, #ffeb3b, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineText 3s linear infinite;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes shineText {
+            to { background-position: 200% center; }
+        }
+
+        .frase.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1.1);
+            text-shadow: 0 0 15px rgba(255, 214, 0, 0.4);
+        }
+
+        .stars {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .comet {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            box-shadow: 0 0 15px 2px #fff;
+            animation: shoot 4s linear forwards;
+        }
+
+        @keyframes shoot {
+            0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
+            20% { transform: translate(400px, 400px) rotate(-45deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .garden {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            width: 100%;
+            height: 60%;
+        }
+
+        .flower {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: sway 4s ease-in-out infinite alternate;
+            transform-origin: bottom center;
+            margin: 0 -15px;
+        }
+
+        @keyframes sway {
+            from { transform: rotate(-4deg); }
+            to { transform: rotate(4deg); }
+        }
+
+        .stem {
+            width: 10px;
+            background: linear-gradient(to top, #0a2d0a, #2e7d32, #4caf50);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+        }
+
+        .leaf {
+            position: absolute;
+            width: 45px;
+            height: 25px;
+            background: #2e7d32;
+            border-radius: 50% 0 50% 0;
+            bottom: 60px;
+            box-shadow: inset 5px -5px 10px rgba(0,0,0,0.3);
+        }
+
+        .leaf.left { left: -40px; transform: rotate(-25deg); }
+        .leaf.right { right: -40px; transform: rotate(115deg); }
+
+        .petals-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            animation: grow 2s cubic-bezier(0.17, 0.67, 0.83, 1.2) forwards;
+        }
+
+        @keyframes grow {
+            0% { transform: scale(0) rotate(-90deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .petal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 90px;
+            background: radial-gradient(circle, #ffeb3b, #ffd600, #ff8f00);
+            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+            transform-origin: center bottom;
+            box-shadow: 0 0 10px rgba(255, 160, 0, 0.3);
+        }
+
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #3e2723, #1b1b1b);
+            border: 2px solid #5d4037;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        .p1 { transform: translate(-50%, -100%) rotate(0deg); }
+        .p2 { transform: translate(-50%, -100%) rotate(45deg); }
+        .p3 { transform: translate(-50%, -100%) rotate(90deg); }
+        .p4 { transform: translate(-50%, -100%) rotate(135deg); }
+        .p5 { transform: translate(-50%, -100%) rotate(180deg); }
+        .p6 { transform: translate(-50%, -100%) rotate(225deg); }
+        .p7 { transform: translate(-50%, -100%) rotate(270deg); }
+        .p8 { transform: translate(-50%, -100%) rotate(315deg); }
+
+    </style>
+</head>
+<body>
+
+    <audio id="miMusica" src="música.mp3" loop preload="auto" playsinline></audio>
+
+    <div id="intro">
+        <p>💛 para mi princesa 💛</p>
+        <button id="btn-entrar" onclick="iniciarExperiencia()">Entrar</button>
+    </div>
+
+    <div id="cine-container">
+        <div class="text-overlay">
+            <div class="titulo-fijo">Para el amor de mi vida y alma entera</div>
+            <div class="frase-container">
+                <div class="frase" id="frase-activa"></div>
+            </div>
+        </div>
+
+        <div id="stars-container"></div>
+        <div class="garden" id="garden"></div>
+    </div>
+
+    <script>
+        const listaFrases = [
+            "Eres el sol que ilumina mis días mi niña.",
+            "Cada momento con usted mi vida es un regalo.",
+            "Gracias por existir, mi amor.",
+            "Mi felicidad tiene su nombre corazon.",
+            "Te amo más de lo que las palabras pueden decir.",
+            "Eres el sueño del que jamas quiero despertar.",
+            "Con usted mi vida, lo tengo todo.",
+            "Su sonrisa es mi motor.",
+            "Siempre serás mi lugar seguro mi vida.",
+            "Estoy muy orgulloso de usted corazon.",
+            "TE AMO."
+        ];
+
+        let indiceFrase = 0;
+        const textoFrase = document.getElementById('frase-activa');
+
+        function cambiarFrase() {
+            textoFrase.classList.remove('visible');
+            
+            setTimeout(() => {
+                textoFrase.innerText = listaFrases[indiceFrase];
+                textoFrase.classList.add('visible');
+                indiceFrase = (indiceFrase + 1) % listaFrases.length;
+            }, 1500);
+        }
+
+        function iniciarExperiencia() {
+            const intro = document.getElementById('intro');
+            const container = document.getElementById('cine-container');
+            const audio = document.getElementById('miMusica');
+
+            audio.load();
+            const playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    audio.volume = 0;
+                    let vol = 0;
+                    let intervalMusica = setInterval(() => {
+                        if (vol < 0.8) {
+                            vol += 0.05;
+                            audio.volume = vol;
+                        } else {
+                            clearInterval(intervalMusica);
+                        }
+                    }, 200);
+                }).catch(error => {
+                    audio.volume = 0.8;
+                    audio.play();
+                });
+            }
+
+            intro.style.opacity = '0';
+
+            setTimeout(() => {
+                intro.style.display = 'none';
+                container.style.display = 'block';
+                setTimeout(() => { 
+                    container.style.opacity = '1'; 
+                    crearFlores();
+                    cambiarFrase(); 
+                    setInterval(cambiarFrase, 5000); 
+                }, 100);
+            }, 2000);
+        }
+
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'stars';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            starsContainer.appendChild(star);
+        }
+
+        setInterval(() => {
+            if (document.getElementById('cine-container').style.display === 'block') {
+                const comet = document.createElement('div');
+                comet.className = 'comet';
+                comet.style.top = Math.random() * 40 + '%';
+                comet.style.left = Math.random() * 60 + '%';
+                starsContainer.appendChild(comet);
+                setTimeout(() => comet.remove(), 4000);
+            }
+        }, 3000);
+
+        function crearFlores() {
+            const garden = document.getElementById('garden');
+            const configuracionFlores = [
+                { h: 220, s: 0.85 }, 
+                { h: 280, s: 1.1 },  
+                { h: 250, s: 0.95 }, 
+                { h: 320, s: 1.25 }, 
+                { h: 230, s: 0.9 }   
+            ];
+
+            configuracionFlores.forEach((conf, i) => {
+                setTimeout(() => {
+                    const flower = document.createElement('div');
+                    flower.className = 'flower';
+                    flower.innerHTML = `
+                        <div class="petals-container" style="transform: scale(${conf.s})">
+                            <div class="petal p1"></div><div class="petal p2"></div>
+                            <div class="petal p3"></div><div class="petal p4"></div>
+                            <div class="petal p5"></div><div class="petal p6"></div>
+                            <div class="petal p7"></div><div class="petal p8"></div>
+                            <div class="center"></div>
+                        </div>
+                        <div class="stem" style="height: ${conf.h}px">
+                            <div class="leaf left"></div>
+                            <div class="leaf right"></div>
+                        </div>
+                    `;
+                    garden.appendChild(flower);
+                }, i * 600);
+            });
+        }
+    </script>
+</body>
+</html>
